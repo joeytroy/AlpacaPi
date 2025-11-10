@@ -644,12 +644,15 @@ CheckOpenCV()
 		PrintWarning "OpenCV not found"
 		echo ""
 		echo "OpenCV is required for:"
-		echo "	- Camera image processing"
+		echo "	- Video recording with ZWO ASI cameras"
+		echo "	- Video recording with other cameras that use OpenCV"
+		echo "	- Camera image processing and live view"
 		echo "	- Client applications (camera, dome, focuser, etc.)"
 		echo "	- SkyTravel visualization"
 		echo ""
 		echo "OpenCV is NOT required for:"
-		echo "	- Basic AlpacaPi server (without camera support)"
+		echo "	- Still image capture (FITS files) - works without OpenCV"
+		echo "	- Basic AlpacaPi server (camera control, exposure settings)"
 		echo "	- Roll-off roof control"
 		echo ""
 		echo "Note: On Raspberry Pi, OpenCV is installed via package manager (fast, ~5 minutes)."
@@ -2210,6 +2213,15 @@ BuildAlpacaPi()
 	if [ "$OPENCV_V3_OK" = false ] && [ "$OPENCV_V4_OK" = false ]
 	then
 		PrintWarning "OpenCV not found - some components may not build"
+		echo ""
+		echo "⚠️  IMPORTANT: Without OpenCV, the following features will NOT be available:"
+		echo "   • Video recording with ZWO ASI cameras"
+		echo "   • Video recording with other cameras that use OpenCV"
+		echo "   • GUI client applications (camera, dome, focuser controllers)"
+		echo "   • Live view windows"
+		echo ""
+		echo "   Still image capture (FITS files) will work fine without OpenCV."
+		echo ""
 	fi
 	
 	#*	Build client (no OpenCV required)
@@ -2273,6 +2285,17 @@ BuildAlpacaPi()
 	#*	Build server based on platform with selective drivers
 	#*	Create a custom Makefile that conditionally includes drivers based on user selections
 	PrintStep "Building AlpacaPi server with selected drivers..."
+	
+	#*	Warn about OpenCV requirement for video if cameras are selected but OpenCV is missing
+	if [ "$BUILD_ZWO_CAMERA" = true ] && [ "$OPENCV_V3_OK" = false ] && [ "$OPENCV_V4_OK" = false ]
+	then
+		echo ""
+		PrintWarning "⚠️  Video recording will NOT be available without OpenCV"
+		echo "   ZWO ASI cameras and other cameras using OpenCV require OpenCV for video recording."
+		echo "   Still image capture (FITS files) will work fine."
+		echo "   To enable video recording, install OpenCV and rebuild."
+		echo ""
+	fi
 	
 	#*	Install USB rules for ZWO cameras if ZWO camera support is selected
 	if [ "$BUILD_ZWO_CAMERA" = true ]
