@@ -185,18 +185,20 @@ There are many different driver modules included in this project, almost every o
 Alpaca/ASCOM plus a couple extras I created for my own use.
 
 AlpacaPi has been tested on the following platforms
-
-	Ubuntu 24.04 LTS x86_64
 	
 	Ubuntu 16.04 LTS x86_64
 
 	Ubuntu 20.04 LTS x86_64
+
+  Ubuntu 24.04 LTS x86_64
 
 	Raspberry Pi 3 (32 bit)
 
 	Raspberry Pi 4 (32 bit)
 
 	Raspberry Pi 4 (64 bit)
+
+  Raspberry Pi 5 (Debian 13.1, 64 bit)
 
 	NVIDIA Jetson Nano (64 bit)
 
