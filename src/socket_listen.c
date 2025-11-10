@@ -80,6 +80,8 @@ int SocketListen_Init(const int listenPortNum)
 {
 int					bindRetCode;
 int					listenRetCode;
+int					socketOption;
+int					setOptRetCode;
 struct	sockaddr_in serv_addr;
 
 	CONSOLE_DEBUG(__FUNCTION__);
@@ -92,6 +94,22 @@ struct	sockaddr_in serv_addr;
 	}
 	CONSOLE_DEBUG_W_NUM("gSocketFD\t=", gSocketFD);
 	CONSOLE_DEBUG_W_NUM("listenPortNum\t=", listenPortNum);
+
+	//*	Set SO_REUSEADDR to allow immediate port reuse after shutdown
+	//*	This prevents "Address already in use" errors when restarting
+	socketOption	=	1;
+	setOptRetCode	=	setsockopt(	gSocketFD,
+									SOL_SOCKET,
+									SO_REUSEADDR,
+									(void *)&socketOption,
+									sizeof(int));
+	if (setOptRetCode < 0)
+	{
+		CONSOLE_DEBUG("setsockopt(SO_REUSEADDR) failed");
+		perror("setsockopt(SO_REUSEADDR)");
+		//*	Continue anyway - may still work
+	}
+
 	memset((char *) &serv_addr, 0, sizeof(serv_addr));
 	serv_addr.sin_family		=	AF_INET;
 	serv_addr.sin_addr.s_addr	=	INADDR_ANY;
