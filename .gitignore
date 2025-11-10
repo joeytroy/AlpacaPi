@@ -66,3 +66,6 @@ requestlog-*
 # Downloaded data folders (optional, downloaded by setup script)
 d3-celestial/
 OpenNGC/
+
+# Test images and captured data
+imagedata/
