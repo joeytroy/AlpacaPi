@@ -2325,11 +2325,18 @@ alpacapi_selective:	DEFINEFLAGS		+=	-D_USE_CAMERA_READ_THREAD_
 alpacapi_selective:	DEFINEFLAGS		+=	-D_INCLUDE_MILLIS_
 alpacapi_selective:	DEFINEFLAGS		+=	-D_ENABLE_DISCOVERY_QUERRY_
 alpacapi_selective:	DEFINEFLAGS		+=	-D_ENABLE_FITS_
+
+EOF
+	
+	#*	Add OpenCV flags only if OpenCV is detected
+	if [ "$OPENCV_V3_OK" = true ] || [ "$OPENCV_V4_OK" = true ]
+	then
+		cat >> "$CUSTOM_MAKEFILE" << 'EOF'
 alpacapi_selective:	DEFINEFLAGS		+=	-D_USE_OPENCV_
 alpacapi_selective:	DEFINEFLAGS		+=	-D_ENABLE_CTRL_IMAGE_
 alpacapi_selective:	DEFINEFLAGS		+=	-D_ENABLE_LIVE_CONTROLLER_
-
 EOF
+	fi
 	
 	#*	Add conditional driver flags
 	if [ "$BUILD_ZWO_CAMERA" = true ]
@@ -2403,8 +2410,18 @@ EOF
 alpacapi_selective:	$(DRIVER_OBJECTS)				\
 			$(HELPER_OBJECTS)				\
 			$(SERIAL_OBJECTS)				\
-			$(SOCKET_OBJECTS)				\
-			$(LIVE_WINDOW_OBJECTS)
+			$(SOCKET_OBJECTS)
+EOF
+	
+	#*	Add OpenCV-dependent objects only if OpenCV is detected
+	if [ "$OPENCV_V3_OK" = true ] || [ "$OPENCV_V4_OK" = true ]
+	then
+		cat >> "$CUSTOM_MAKEFILE" << 'EOF'
+alpacapi_selective:	$(LIVE_WINDOW_OBJECTS)
+EOF
+	fi
+	
+	cat >> "$CUSTOM_MAKEFILE" << 'EOF'
 
 EOF
 	
@@ -2447,8 +2464,15 @@ EOF
 	
 	#*	Build link command with conditional objects
 	#*	Start with base objects (always included)
-	LINK_OBJECTS="\$(DRIVER_OBJECTS) \$(HELPER_OBJECTS) \$(SERIAL_OBJECTS) \$(SOCKET_OBJECTS) \$(LIVE_WINDOW_OBJECTS)"
-	LINK_LIBS="\$(OPENCV_LINK) -ludev -lusb-1.0 -lpthread -lcfitsio"
+	LINK_OBJECTS="\$(DRIVER_OBJECTS) \$(HELPER_OBJECTS) \$(SERIAL_OBJECTS) \$(SOCKET_OBJECTS)"
+	LINK_LIBS="-ludev -lusb-1.0 -lpthread -lcfitsio"
+	
+	#*	Add OpenCV-dependent objects and libraries only if OpenCV is detected
+	if [ "$OPENCV_V3_OK" = true ] || [ "$OPENCV_V4_OK" = true ]
+	then
+		LINK_OBJECTS="$LINK_OBJECTS \$(LIVE_WINDOW_OBJECTS)"
+		LINK_LIBS="\$(OPENCV_LINK) $LINK_LIBS"
+	fi
 	
 	#*	Add conditional objects and libraries
 	if [ "$BUILD_ZWO_CAMERA" = true ]
