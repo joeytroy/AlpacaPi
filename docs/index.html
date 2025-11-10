@@ -1,206 +1,142 @@
-<HTML>
-<TITLE>AlpacaPi</TITLE>
-<!-------------------------------------------->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>AlpacaPi</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="container">
+		<header>
+			<h1>AlpacaPi</h1>
+		</header>
 
-<BODY bgcolor=#777777>
-<FONT COLOR=white>
+		<nav>
+			<ul>
+				<li><a href="index.html">Home</a></li>
+				<li><a href="skytravel.html">SkyTravel</a></li>
+				<li><a href="drivers.html">Drivers</a></li>
+				<li><a href="clientapps.html">Client Apps</a></li>
+				<li><a href="moonphase.html">Moon Phase</a></li>
+				<li><a href="skyimage.html">SkyImage</a></li>
+				<li><a href="aavsoTargetTool.html">AAVSO</a></li>
+			</ul>
+		</nav>
 
-<CENTER>
-<TABLE BORDER=1 BGCOLOR=BLACK>
-	<TR>
-	<TH width=700>
-		<FONT COLOR=PURPLE>
-		<H1>AlpacaPi</H1>
-	</TH>
-	</TR>
-</TABLE>
-</CENTER>
-<P>
-<!-------------------------------------------->
-<CENTER>
-<TABLE BORDER=1>
-	</TR>
-		<TH><A HREF=index.html>Home</A>					</TH>
-		<TH><A HREF=skytravel.html>SkyTravel</A>		</TH>
-		<TH><A HREF=drivers.html>Drivers</A>			</TH>
-		<TH><A HREF=clientapps.html>Client Apps</A>		</TH>
-		<TH><A HREF=moonphase.html>Moon Phase</A>		</TH>
-		<TH><A HREF=skyimage.html>SkyImage</A>			</TH>
-		<TH><A HREF=aavsoTargetTool.html>AAVSO</A>		</TH>
-	</TR>
-</TABLE>
+		<main>
+			<p><em>Alpaca</em> is the new protocol from the ASCOM community for controlling astronomy equipment.
+			Alpaca is 100% backwards compatible with ASCOM but instead of using COM (Component Object Mode) which is
+			exclusive to Windows, Alpaca uses HTTP and JSON for data communications.
+			This allows it to run across multiple machines in a client/server or user/driver mode.
+			It also allows you to use any platform you want and no longer are tied to Windows.
+			In fact you can run the system with no Windows machines at all.</p>
 
+			<p><em>AlpacaPi</em> is my implementation of the Alpaca protocol to run on Linux,
+			specifically it was designed to run on the Raspberry-Pi, which is why I call it AlpacaPi.
+			It will run on just about any flavor of Linux and will run on both 32-bit and 64-bit Linux.</p>
 
-</CENTER>
-<!-------------------------------------------->
+			<p><em>AlpacaPi</em> implements all of the drivers in one application.
+			On startup, it looks to see what is attached, for example if it discovered 2 ZWO cameras and 1 ATIK Camera,
+			it would create 3 camera drivers (0,1,2) that could be used interdependently.
+			I have actually done this and it works just fine.</p>
 
-<P>
-<I>Alpaca</I> is the new protocol from the ASCOM community for controlling astronomy equipment.
-Alpaca is 100% backwards compatible with ASCOM but instead of using COM (Component Object Mode) which is
-exclusive to Windows, Alpaca uses HTTP and JSON for data communications.
-This allows it to run across multiple machines in a client/server or user/driver mode.
-It also allows you to use any platform you want and no longer are tied to Windows.
-In fact you can run the system with no Windows machines at all.
-<P>
-<I>AlpacaPi</I> is my implementation of the Alpaca protocol to run on Linux,
-specifically it was designed to run on the Raspberry-Pi, which is why I call it AlpacaPi.
-It will run on just about any flavor of Linux and will run on both 32-bit and 64-bit Linux.
+			<p>My normal configuration in my observatory is 3 imaging scopes on one mount, each of a different size.
+			Each one has one Raspberry-Pi to control it.
+			Each imaging setup has
+			a camera,
+			a filter wheel,
+			a Moonlite NiteCrawler focuser which is implemented as a focuser AND a rotator.</p>
+			<p>This only requires one copy of the alpacapi driver, which handles all of 4 of the above listed devices.</p>
 
+			<p><em>AlpacaPi</em> is written in C/C++ and runs on Linux, it is open source.
+			<a href="https://github.com/msproul/AlpacaPi" target="_blank">https://github.com/msproul/AlpacaPi</a></p>
 
-<P>
-<I>AlpacaPi</I> implements all of the drivers in one application.
-On startup, it looks to see what is attached, for example if it discovered 2 ZWO cameras and 1 ATIK Camera,
-it would create 3 camera drivers (0,1,2) that could be used interdependently.
-I have actually done this and it works just fine.
-<P>
-My normal configuration in my observatory is 3 imaging scopes on one mount, each of a different size.
-Each one has one Raspberry-Pi to control it.
-Each imaging setup has
-a camera,
-a filter wheel,
-a Moonlite NiteCrawler focuser which is implemented as a focuser AND a rotator.
-<BR>
-This only requires one copy of the alpacapi driver, which handles all of 4 of the above listed devices.
+			<hr>
 
+			<h1 class="text-center">Installation</h1>
 
-<P>
-<I>AlpacaPi</I> is written in C/C++ and runs on Linux, it is open source.
-<A HREF=https://github.com/msproul/AlpacaPi target=github>https://github.com/msproul/AlpacaPi</A>
+			<p>AlpacaPi uses OpenCV for all of the graphics and image processing such as saving images from the camera.
+			In almost all cases, OpenCV is required.
+			The only time it is not required is when AlpacaPi is only used for a driver such as a roll off roof.</p>
 
+			<p>The installation process has been simplified with an automated setup script that handles all dependencies,
+			libraries, and configuration. You only need to ensure git is installed, then run the setup script.</p>
 
-<HR>
-<CENTER>
-<H1>Installation</H1>
-</CENTER>
-AlpacaPi uses opencv for all of the graphics and image processing such as saving images from the camera.
-In almost all cases, opencv is required.
-The only time it is not required is when AlpacaPi is only used for a driver such as a roll off roof.
-<P>
-OpenCV version 4.5.1 or earlier must be used in order to get support for the mouse wheel.
-The mouse wheel stopped working after that and they refuse to fix the bug.
-<P>
-The AlpacaPi project was started with opencv version 3 which supported the C interface as well as the C++ interface.
-Version 4 and later no longer support the C interface.  AlpcaPi is now using the C++ interface.
-It will still compile with older versions back to 2.9, however that support is being phased out.
-<P>
-You can copy the text that is in <FONT COLOR=#00FF00>green</FONT> and paste into your terminal window.
-The command to paste into a terminal window is SHIFT-CTRL-V
-<OL>
-	<LI><H2><FONT COLOR=BLACK>Make sure git is installed</FONT></H2>
-	<PRE>
-	<FONT COLOR=#00FF00>git --version</FONT>
-		git version 2.39.2
-	</PRE>
-	If it is not installed (any version will work)
-	<PRE>
-	<FONT COLOR=#00FF00>sudo apt-get install git</FONT>
-	</PRE>
+			<p>You can copy the text that is in <span class="highlight-green">green</span> and paste into your terminal window.
+			The command to paste into a terminal window is SHIFT-CTRL-V</p>
 
+			<ol>
+				<li class="installation-step">
+					<h2>Make sure git is installed</h2>
+					<pre><code class="green-text">git --version</code>
+		git version 2.39.2</pre>
+					<p>If it is not installed (any version will work)</p>
+					<pre><code class="green-text">sudo apt-get install git</code></pre>
+				</li>
 
-	<LI><H2><FONT COLOR=BLACK>Make sure gcc is installed</FONT></H2>
-	<PRE>
-	<FONT COLOR=#00FF00>gcc --version</FONT>
-		gcc (Debian 12.2.0-14) 12.2.0
-		Copyright (C) 2022 Free Software Foundation, Inc.
-		This is free software; see the source for copying conditions.  There is NO
-		warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+				<li class="installation-step">
+					<h2>Clone AlpacaPi repository</h2>
+					<pre><code class="green-text">git clone https://github.com/msproul/AlpacaPi.git
+cd AlpacaPi</code></pre>
+				</li>
 
+				<li class="installation-step">
+					<h2>Run the setup script</h2>
+					<pre><code class="green-text">./setup_complete.sh</code></pre>
+					<p>The setup script will guide you through the installation process with interactive prompts. It will:</p>
+					<ul>
+						<li>Check and install build tools (gcc, g++, make, cmake, pkg-config)</li>
+						<li>Check and install system libraries (libusb, libudev, libi2c, libjpeg, libgtk)</li>
+						<li>Install FITS library (cfitsio)</li>
+						<li>Check and install OpenCV (via package manager - recommended, or from source if needed)</li>
+						<li>Install USB device rules for cameras and other devices</li>
+						<li>Install vendor SDKs (ZWO, ATIK, QHY, etc.) if present</li>
+						<li>Download extra data for SkyTravel (OpenNGC, Milky Way outline) if desired</li>
+						<li>Verify build environment</li>
+						<li>Optionally build AlpacaPi with selected drivers</li>
+					</ul>
+					<p><strong>Note:</strong> The setup script can be run multiple times safely. It will detect what's already installed
+					and skip those steps. You can also run it again later to install additional components.</p>
+					<p><strong>OpenCV Installation:</strong> On Raspberry Pi, OpenCV is installed via package manager (fast, ~5 minutes).
+					Compiling from source takes 4+ hours and is only needed if package manager installation fails.</p>
+				</li>
 
-	<FONT COLOR=#00FF00>g++ --version</FONT>
-		g++ (Debian 12.2.0-14) 12.2.0
-		Copyright (C) 2022 Free Software Foundation, Inc.
-		This is free software; see the source for copying conditions.  There is NO
-		warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+				<li class="installation-step">
+					<h2>Build AlpacaPi (if not done during setup)</h2>
+					<p>If you didn't build during setup, or want to rebuild with different options:</p>
+					<pre><code class="green-text">./setup_complete.sh</code></pre>
+					<p>When prompted, select "Build AlpacaPi now" and choose which drivers to include.</p>
+					<p>Alternatively, you can build manually using the Makefile. For details on building specific drivers,
+					click on the <a href="drivers.html">DRIVERS</a> link at the top of this page.</p>
+				</li>
+			</ol>
 
-	<FONT COLOR=#00FF00>make --version</FONT>
-		GNU Make 4.3
-		Built for aarch64-unknown-linux-gnu
-		Copyright (C) 1988-2020 Free Software Foundation, Inc.
-		License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
-		This is free software: you are free to change and redistribute it.
-		There is NO WARRANTY, to the extent permitted by law.
-	</PRE>
-	Your version numbers may be different. The above output is from a Raspberry-Pi 5.
-	<P>
-	If any of these fail, install the build tools with this command.
-	Note: this is not normally needed on the Raspberry Pi but is needed on the current Ubuntu release.
-	<PRE>
-	<FONT COLOR=#00FF00>sudo apt-get install build-essential</FONT>
-	</PRE>
+			<h2>Additional Information</h2>
+			<p><strong>Uninstall:</strong> To remove AlpacaPi components from your system:</p>
+			<pre><code class="green-text">./setup_complete.sh --uninstall</code></pre>
 
+			<p><strong>Note:</strong> The setup script automatically detects and configures OpenCV (supports both version 3 and 4),
+			handles SkyTravel builds, and manages all dependencies. For advanced build options or specific driver configurations,
+			see the <a href="drivers.html">DRIVERS</a> page.</p>
 
-	<LI><H2><FONT COLOR=BLACK>Install OpenCV 4.5.1</FONT></H2>
-	<PRE>
-	<FONT COLOR=#00FF00>
-	git clone https://github.com/msproul/opencv451.git
-	cd opencv451
-	./install_opencv451.sh
-	./install_pkgconfig.sh
-	cd
-	</FONT>
-	</PRE>
-	NOTE: This downloads, compiles, and installs opencv version 4.5.1.
-	It is best if opencv has not been previously installed, however, it normally works even if
-	there is another version.
-	<P>
-	IMPORTANT!!!!:  This can take several HOURS to complete.
-	<P>
-	It will ask you some questions, make sure to answer "y" to all of the questions.
+			<hr>
 
-	<LI><H2><FONT COLOR=BLACK>Install AlpacaPi</FONT></H2>
-	<PRE>
-	<FONT COLOR=#00FF00>
-	git clone https://github.com/msproul/AlpacaPi.git
-	cd AlpacaPi
-	./install_everything.sh
-	</FONT>
-	</PRE>
-	To build SkyTravel
-	<PRE>
-	<FONT COLOR=#00FF00>
-	make skycv4
-	./skytravel
-	</FONT>
-	</PRE>
+			<div id="google_translate_element"></div>
 
-	If you are using skytravel,
-	you can download the NGC data and Milkyway outline data with this command.
-	This can be done at anytime.
-	<PRE>
-	<FONT COLOR=#00FF00>
-	./download_extra_data.sh
-	</FONT>
-	</PRE>
-	There is another script that will prompt you if you want to download various libraries for cameras etc.
-	<PRE>
-	<FONT COLOR=#00FF00>
-	./install_libraries.sh
-	</FONT>
-	</PRE>
+			<script type="text/javascript">
+				function googleTranslateElementInit()
+				{
+					new google.translate.TranslateElement(	{pageLanguage: 'en'},
+															'google_translate_element'
+															);
+				}
+			</script>
 
-
-	To build the various drivers, click on the DRIVERS link at the top of this page.
-	There are a very large number of options in the building of drivers.
-	If what you are looking for is not listed on the drivers page,
-	PLEASE contact me for specifics on how to build a particular driver.
-	msproul -at- skychariot.com
-
-
-</OL>
-<HR>
-
-	<div id="google_translate_element"></div>
-
-	<script type="text/javascript">
-		function googleTranslateElementInit()
-		{
-			new google.translate.TranslateElement(	{pageLanguage: 'en'},
-													'google_translate_element'
-													);
-		}
-	</script>
-
-	<script type="text/javascript"
-			src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
-	</script>
-
+			<script type="text/javascript"
+					src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+			</script>
+		</main>
+	</div>
+</body>
+</html>
